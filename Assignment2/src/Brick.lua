@@ -73,7 +73,7 @@ function Brick:hit()
 
     -- if we're at a higher tier than the base, we need to go down a tier
     -- if we're already at the lowest color, else just go down a color
-    if self.tier > 0 then
+    if self.tier > 0 and not self.key then
         if self.color == 1 then
             self.tier = self.tier - 1
             self.color = 5
@@ -82,7 +82,7 @@ function Brick:hit()
         end
     else
         -- if we're in the first tier and the base color, remove brick from play
-        if self.color == 1 then
+        if self.color == 1 or self.key then
             self.inPlay = false
         else
             self.color = self.color - 1
@@ -105,7 +105,7 @@ function Brick:render()
         love.graphics.draw(gTextures['main'], 
             -- if we are not a key
             -- multiply color by 4 (-1) to get our color offset, then add tier to that
-            -- to draw the correct tier and color brick onto the screen else just render key
+            -- to draw the correct tier and color brick onto the screen else just draw key brick
             gFrames['bricks'][self.key and 22 or 1 + ((self.color - 1) * 4) + self.tier],
             self.x, self.y)
     end
